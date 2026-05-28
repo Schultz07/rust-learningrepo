@@ -1,9 +1,10 @@
-use std::{fs::File, io::ErrorKind};
+use std::{
+    fs::{self, File},
+    io::{self, ErrorKind},
+};
 
 fn main() {
-    let greeting_file_result = File::open("hello.txt");
-
-    let greeting_file = match greeting_file_result {
+    let greeting_file = match File::open("Hello.txt") {
         Ok(file) => file,
         Err(error) => match error.kind() {
             ErrorKind::NotFound => match File::create("Hello.txt") {
@@ -15,4 +16,12 @@ fn main() {
             }
         },
     };
+}
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    fs::read_to_string("hello.txt")
+}
+
+fn last_char_of_first_line(text: &str) -> Option<char> {
+    text.lines().next()?.chars().last()
 }
